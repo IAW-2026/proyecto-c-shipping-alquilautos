@@ -49,7 +49,6 @@ model Coordinacion {
   horaInicioDisponible String             // Ej: "10:00"
   horaFinDisponible    String             // Ej: "14:00"
   horaSeleccionada     String?            // Seleccionada posteriormente por el alquilador
-  ubicacion            String
   estado               EstadoCoordinacion @default(PENDIENTE)
 
   createdAt            DateTime           @default(now())
