@@ -77,7 +77,6 @@ enum EstadoEntrega {
   PENDIENTE   //defecto (cuando seller acepta la reserva)
   COORDINADA  //cuando buyer me envia hora seleccionada
   ENTREGADO   //cuando llega fecha y hora acordada
-  EN_USO      //durante el plazo de alquiler
   DEVUELTO    //finalizado el plazo de alquiler
   CANCELADO   //si buyer cancela 
 }
