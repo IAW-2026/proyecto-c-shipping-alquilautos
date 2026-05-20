@@ -74,13 +74,12 @@ model HistorialEstado {
 // ENUMS
 // ------------------------------------------------------
 enum EstadoEntrega {
-  PENDIENTE
-  COORDINANDO
-  COORDINADA
-  ENTREGADO
-  EN_USO
-  DEVUELTO
-  CANCELADO
+  PENDIENTE   //defecto (cuando seller acepta la reserva)
+  COORDINADA  //cuando buyer me envia hora seleccionada
+  ENTREGADO   //cuando llega fecha y hora acordada
+  EN_USO      //durante el plazo de alquiler
+  DEVUELTO    //finalizado el plazo de alquiler
+  CANCELADO   //si buyer cancela 
 }
 
 enum TipoCoordinacion {
@@ -90,7 +89,6 @@ enum TipoCoordinacion {
 
 enum EstadoCoordinacion {
   PENDIENTE
-  CONFIRMADA
-  COMPLETADA
+  CONFIRMADA    //cuando buyer manda hora seleccionada
   CANCELADA
 }
