@@ -3,13 +3,13 @@ import DashboardChart from "@/components/admin/DashboardChart";
 import StatusChart from "@/components/admin/StatusChart";
 
 import { getDashboardStats } from "@/lib/data/dashboard/getDashboardStats";
-import { getDeliveryChartWeekly } from "@/lib/data/dashboard/getDeliveryChartWeekly";
+import { getDeliveryChartData } from "@/lib/data/dashboard/getDeliveryChartData";
 import { getStatusDistribution } from "@/lib/data/dashboard/getStatusDistribution";
 
 export default async function DashboardPage() {
   const [stats, deliveryChartData, statusDistribution] = await Promise.all([
     getDashboardStats(),
-    getDeliveryChartWeekly(),
+    getDeliveryChartData(),
     getStatusDistribution(),
   ]);
 
