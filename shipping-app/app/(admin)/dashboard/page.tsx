@@ -2,24 +2,53 @@ import StatCard from "@/components/admin/StatCard";
 import DashboardChart from "@/components/admin/DashboardChart";
 import StatusChart from "@/components/admin/StatusChart";
 
-export default function DashboardPage() {
+import { getDashboardStats } from "@/lib/data/dashboard/getDashboardStats";
+import { getDeliveryChartWeekly } from "@/lib/data/dashboard/getDeliveryChartWeekly";
+import { getStatusDistribution } from "@/lib/data/dashboard/getStatusDistribution";
+
+export default async function DashboardPage() {
+  const [stats, deliveryChartData, statusDistribution] = await Promise.all([
+    getDashboardStats(),
+    getDeliveryChartWeekly(),
+    getStatusDistribution(),
+  ]);
+
   return (
     <div className="space-y-6">
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <StatCard title="Entregas activas" value="24" change="+12%" />
-        <StatCard title="Pendientes de coordinar" value="6" change="-4%" />
-        <StatCard title="Devoluciones" value="6" change="+8%" />
-        <StatCard title="Canceladas" value="6" change="-2%" />
+        <StatCard
+          title="Entregas activas"
+          value={stats.entregasActivas.toString()}
+          change="+12%"
+        />
+
+        <StatCard
+          title="Pendientes de coordinar"
+          value={stats.pendientesCoordinar.toString()}
+          change="-4%"
+        />
+
+        <StatCard
+          title="Devoluciones"
+          value={stats.devoluciones.toString()}
+          change="+8%"
+        />
+
+        <StatCard
+          title="Canceladas"
+          value={stats.canceladas.toString()}
+          change="-2%"
+        />
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
-          <DashboardChart />
+          <DashboardChart data={deliveryChartData} />
         </div>
 
-        <StatusChart />
+        <StatusChart data={statusDistribution} />
       </div>
     </div>
   );

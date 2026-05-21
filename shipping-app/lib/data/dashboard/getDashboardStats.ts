@@ -7,7 +7,7 @@ export async function getDashboardStats() {
     await Promise.all([
       prisma.entrega.count({
         where: {
-          estado: "EN_USO",
+          estado: "ENTREGADO",
         },
       }),
 

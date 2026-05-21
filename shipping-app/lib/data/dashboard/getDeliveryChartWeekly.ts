@@ -4,11 +4,11 @@ import { prisma } from "@/lib/prisma";
 
 const DAYS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
-export async function getDeliveryChartData() {
+export async function getDeliveryChartWeekly() {
   const entregas = await prisma.entrega.findMany({
     where: {
       estado: {
-        in: ["ENTREGADO", "EN_USO", "DEVUELTO"],
+        in: ["ENTREGADO", "DEVUELTO"],
       },
     },
 

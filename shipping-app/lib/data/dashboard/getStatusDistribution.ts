@@ -2,9 +2,8 @@ import { prisma } from "@/lib/prisma";
 
 const STATUS_COLORS: Record<string, string> = {
   PENDIENTE: "#22d3ee",
-  COORDINADA: "#10b981",
-  ENTREGADO: "#a78bfa",
-  EN_USO: "#f59e0b",
+  COORDINADA: "#f59e0b",
+  ENTREGADO: "#10b981",
   DEVUELTO: "#60a5fa",
   CANCELADO: "#ef4444",
 };
