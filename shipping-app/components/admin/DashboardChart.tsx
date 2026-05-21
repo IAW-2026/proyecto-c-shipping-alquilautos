@@ -30,9 +30,9 @@ export default function DashboardChart({ data }: Props) {
 
           <Tooltip />
 
-          <Line type="monotone" dataKey="entregas" stroke="#22c55e" />
+          <Line type="monotone" dataKey="entregas" stroke="#10b981" />
 
-          <Line type="monotone" dataKey="devoluciones" stroke="#38bdf8" />
+          <Line type="monotone" dataKey="devoluciones" stroke="#60a5fa" />
         </LineChart>
       </ResponsiveContainer>
     </div>
