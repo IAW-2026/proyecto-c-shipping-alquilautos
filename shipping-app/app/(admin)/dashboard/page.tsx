@@ -5,12 +5,22 @@ import StatusChart from "@/components/admin/StatusChart";
 import { getDashboardStats } from "@/lib/data/dashboard/getDashboardStats";
 import { getDeliveryChartData } from "@/lib/data/dashboard/getDeliveryChartData";
 import { getStatusDistribution } from "@/lib/data/dashboard/getStatusDistribution";
+import { getWeeklyDeliveriesComparison } from "@/lib/data/dashboard/getWeeklyDeliveriesComparison";
+import { getWeeklyReturnsComparison } from "@/lib/data/dashboard/getWeeklyReturnsComparison";
 
 export default async function DashboardPage() {
-  const [stats, deliveryChartData, statusDistribution] = await Promise.all([
+  const [
+    stats,
+    deliveryChartData,
+    statusDistribution,
+    deliverysComparison,
+    returnsComparison,
+  ] = await Promise.all([
     getDashboardStats(),
     getDeliveryChartData(),
     getStatusDistribution(),
+    getWeeklyDeliveriesComparison(),
+    getWeeklyReturnsComparison(),
   ]);
 
   return (
@@ -19,27 +29,22 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <StatCard
           title="Entregas activas"
-          value={stats.entregasActivas.toString()}
-          change="+12%"
+          value={stats.entregasActivas}
+          change={deliverysComparison.variation}
         />
 
         <StatCard
           title="Pendientes de coordinar"
-          value={stats.pendientesCoordinar.toString()}
-          change="-4%"
+          value={stats.pendientesCoordinar}
         />
 
         <StatCard
-          title="Devoluciones"
-          value={stats.devoluciones.toString()}
-          change="+8%"
+          title="Devoluciones esta semana"
+          value={returnsComparison.current}
+          change={returnsComparison.variation}
         />
 
-        <StatCard
-          title="Canceladas"
-          value={stats.canceladas.toString()}
-          change="-2%"
-        />
+        <StatCard title="Canceladas" value={stats.canceladas} />
       </div>
 
       {/* Charts */}
