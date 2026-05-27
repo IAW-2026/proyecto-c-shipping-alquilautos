@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { Truck, LayoutDashboard, Package } from "lucide-react";
+import { Truck, LayoutDashboard, Package } from "lucide-react"; //iconos de cada link
 
 import { usePathname } from "next/navigation";
 
@@ -17,13 +17,18 @@ export default function Sidebar() {
         {/* Dashboard */}
         <Link
           href="/dashboard"
-          className={`flex items-center gap-2 p-2 rounded transition ${
+          className={`flex items-center gap-2 p-2 rounded-lg border transition ${
             pathname === "/dashboard"
-              ? "bg-slate-800 text-white"
-              : "hover:bg-slate-800 text-slate-300"
+              ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
+              : "border-transparent text-slate-300 hover:bg-slate-800"
           }`}
         >
-          <LayoutDashboard size={18} />
+          <LayoutDashboard
+            size={18}
+            className={
+              pathname === "/dashboard" ? "text-cyan-400" : "text-slate-500"
+            }
+          />
 
           <span>Dashboard</span>
         </Link>
@@ -31,13 +36,18 @@ export default function Sidebar() {
         {/* Entregas */}
         <Link
           href="/entregas"
-          className={`flex items-center gap-2 p-2 rounded transition ${
+          className={`flex items-center gap-2 p-2 rounded-lg border transition ${
             pathname === "/entregas"
-              ? "bg-slate-800 text-white"
-              : "hover:bg-slate-800 text-slate-300"
+              ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
+              : "border-transparent text-slate-300 hover:bg-slate-800"
           }`}
         >
-          <Truck size={18} />
+          <Truck
+            size={18}
+            className={
+              pathname === "/entregas" ? "text-cyan-400" : "text-slate-500"
+            }
+          />
 
           <span>Entregas</span>
         </Link>
@@ -45,13 +55,20 @@ export default function Sidebar() {
         {/* Coordinaciones */}
         <Link
           href="/coordinaciones"
-          className={`flex items-center gap-2 p-2 rounded transition ${
+          className={`flex items-center gap-2 p-2 rounded-lg border transition ${
             pathname === "/coordinaciones"
-              ? "bg-slate-800 text-white"
-              : "hover:bg-slate-800 text-slate-300"
+              ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
+              : "border-transparent text-slate-300 hover:bg-slate-800"
           }`}
         >
-          <Package size={18} />
+          <Package
+            size={18}
+            className={
+              pathname === "/coordinaciones"
+                ? "text-cyan-400"
+                : "text-slate-500"
+            }
+          />
 
           <span>Coordinaciones</span>
         </Link>
