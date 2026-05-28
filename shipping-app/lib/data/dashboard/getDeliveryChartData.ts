@@ -30,7 +30,7 @@ export async function getDeliveryChartData() {
     );
 
     if (entregaCoord) {
-      const dayIndex = new Date(entregaCoord.fecha).getDay();
+      const dayIndex = new Date(entregaCoord.fecha).getUTCDay();
       result[dayIndex].entregas += 1;
     }
 
@@ -41,7 +41,7 @@ export async function getDeliveryChartData() {
       );
 
       if (devolucionCoord) {
-        const dayIndex = new Date(devolucionCoord.fecha).getDay();
+        const dayIndex = new Date(devolucionCoord.fecha).getUTCDay();
         result[dayIndex].devoluciones += 1;
       }
     }
