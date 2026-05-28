@@ -36,7 +36,7 @@ export async function getWeeklyReturnsComparison() {
     prisma.historialEstado.count({
       where: {
         estado: "DEVUELTO",
-        fechaHora: {
+        fecha_hora: {
           gte: startCurrent,
           lte: endCurrent,
         },
@@ -46,7 +46,7 @@ export async function getWeeklyReturnsComparison() {
     prisma.historialEstado.count({
       where: {
         estado: "DEVUELTO",
-        fechaHora: {
+        fecha_hora: {
           gte: startPrev,
           lte: endPrev,
         },

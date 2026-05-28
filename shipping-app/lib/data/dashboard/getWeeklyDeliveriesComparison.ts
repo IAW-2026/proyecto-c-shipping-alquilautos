@@ -35,7 +35,7 @@ export async function getWeeklyDeliveriesComparison() {
     prisma.historialEstado.count({
       where: {
         estado: "ENTREGADO",
-        fechaHora: {
+        fecha_hora: {
           gte: startCurrent,
           lte: endCurrent,
         },
@@ -45,7 +45,7 @@ export async function getWeeklyDeliveriesComparison() {
     prisma.historialEstado.count({
       where: {
         estado: "ENTREGADO",
-        fechaHora: {
+        fecha_hora: {
           gte: startPrev,
           lte: endPrev,
         },
