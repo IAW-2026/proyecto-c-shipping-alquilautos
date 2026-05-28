@@ -15,7 +15,7 @@ export default function StatusChart({ data }: Props) {
     <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 h-80">
       <h2 className="mb-4 font-semibold">Estados de entrega</h2>
 
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height={240}>
         <PieChart>
           <Pie data={data} dataKey="value" outerRadius={90}>
             {data.map((entry, index) => (

@@ -24,7 +24,7 @@ export default function DashboardChart({ data }: Props) {
         Distribucion semanal de actividad
       </h2>
 
-      <ResponsiveContainer width="100%" height="85%">
+      <ResponsiveContainer width="100%" height={240}>
         <LineChart data={data} accessibilityLayer>
           <XAxis dataKey="day" stroke="#64748b" />
 
