@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import StatCard from "@/components/admin/StatCard";
 import DashboardChart from "@/components/admin/DashboardChart";
 import StatusChart from "@/components/admin/StatusChart";
