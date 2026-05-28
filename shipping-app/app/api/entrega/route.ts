@@ -8,10 +8,10 @@ export async function POST(req: Request) {
     // Guarda una nueva entrega en la DB
     const entrega = await prisma.entrega.create({
       data: {
-        idReserva: body.idReserva,
-        idVehiculo: body.idVehiculo,
-        idPropietario: body.idPropietario,
-        idComprador: body.idComprador,
+        id_reserva: body.id_reserva,
+        id_vehiculo: body.id_vehiculo,
+        id_propietario: body.id_propietario,
+        id_comprador: body.id_comprador,
         observaciones: body.observaciones,
       },
     });
