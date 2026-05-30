@@ -32,12 +32,12 @@ export default function DashboardChart({ data }: Props) {
 
           <Tooltip
             formatter={(value) => `${value}%`}
-            wrapperStyle={{ pointerEvents: "none", zIndex: 50 }} // Evita que interfiera con el puntero y lo aísla
+            wrapperStyle={{ pointerEvents: "none", zIndex: 50 }}
             contentStyle={{
               backgroundColor: "#0f172a",
               borderColor: "#1e293b",
               borderRadius: "8px",
-            }} // Estilos oscuros para que combine con tu UI
+            }}
           />
 
           <Line

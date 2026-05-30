@@ -25,3 +25,12 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   @apply antialiased;
 }
+
+/*fix recuadros en charts al hacer click o tab*/
+.recharts-wrapper *:focus {
+  outline: 2px solid transparent !important;
+}
+
+.recharts-wrapper *:focus-visible {
+  outline: 2px solid transparent !important;
+}
