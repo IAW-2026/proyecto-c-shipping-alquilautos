@@ -1,3 +1,5 @@
+import { STATUS_COLORS } from "@/lib/config/statusColors";
+
 interface Props {
   entregas: any[];
 }
@@ -20,6 +22,9 @@ export default function EntregasTable({ entregas }: Props) {
 
         <tbody>
           {entregas.map((entrega) => {
+            const status =
+              STATUS_COLORS[entrega.estado as keyof typeof STATUS_COLORS].color
+                .ui;
             const entregaCoord = entrega.coordinaciones.find(
               (c: any) => c.tipo === "ENTREGA",
             );
@@ -37,38 +42,7 @@ export default function EntregasTable({ entregas }: Props) {
                 <td className="p-4">
                   <span
                     className={`
-                      px-2 py-1 rounded-md text-xs font-medium
-
-                      ${
-                        entrega.estado === "PENDIENTE"
-                          ? "bg-yellow-500/10 text-yellow-400"
-                          : ""
-                      }
-
-                      ${
-                        entrega.estado === "COORDINADA"
-                          ? "bg-blue-500/10 text-blue-400"
-                          : ""
-                      }
-
-                      ${
-                        entrega.estado === "ENTREGADO"
-                          ? "bg-green-500/10 text-green-400"
-                          : ""
-                      }
-
-                      ${
-                        entrega.estado === "DEVUELTO"
-                          ? "bg-slate-700 text-slate-300"
-                          : ""
-                      }
-
-                      ${
-                        entrega.estado === "CANCELADO"
-                          ? "bg-red-500/10 text-red-400"
-                          : ""
-                      }
-                    `}
+                      px-2 py-1 rounded-md text-xs font-medium ${status}`}
                   >
                     {entrega.estado}
                   </span>
