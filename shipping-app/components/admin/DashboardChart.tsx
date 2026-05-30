@@ -51,7 +51,7 @@ export default function DashboardChart({ data }: Props) {
           <Line
             type="monotone"
             dataKey="devoluciones"
-            stroke="#60a5fa"
+            stroke="#64748b"
             strokeWidth={2}
             dot={{ r: 4 }}
           />
