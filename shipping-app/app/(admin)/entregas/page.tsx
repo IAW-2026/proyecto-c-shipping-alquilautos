@@ -1,7 +1,6 @@
 export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/prisma";
-
 import EntregasTable from "@/components/admin/EntregasTable";
 
 export default async function EntregasPage() {
