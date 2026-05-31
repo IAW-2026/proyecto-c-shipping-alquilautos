@@ -1,7 +1,6 @@
 /*confirmar horarios seleccionados de una entrega 
   - puede acceder: buyer
 */
-//agregar: en caso de exito hacer patch a gaston con "COORDINADA"
 
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
@@ -69,6 +68,20 @@ export async function PATCH(req: Request) {
         descripcion: "Horarios confirmados por el comprador",
       },
     });
+
+    //notificar a seller
+    await fetch(
+      `${process.env.SELLER_APP_URL}/api/reserva/${body.id_reserva}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          estado: "COORDINADA",
+        }),
+      },
+    );
 
     return Response.json({
       id_reserva: entrega.id_reserva,
