@@ -1,7 +1,7 @@
 /*cancelar una entrega  
   - puede acceder: buyer/seller 
+  - si se cancela y el estado es PENDIENTE (fue el buyer) -> avisar a seller
 */
-//agregar: si el estado es pendiente y se cancela avisar a gaston
 
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
@@ -38,6 +38,8 @@ export async function PATCH(
       return Response.json({ error: "Entrega no encontrada" }, { status: 404 });
     }
 
+    const estadoAnterior = entrega.estado;
+
     //actualiza estado entrega
     await prisma.entrega.update({
       where: {
@@ -68,6 +70,19 @@ export async function PATCH(
         descripcion: "Entrega cancelada",
       },
     });
+
+    //notificar a seller
+    if (estadoAnterior === "PENDIENTE") {
+      await fetch(`${process.env.SELLER_APP_URL}/api/reserva/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          estado: "CANCELADA",
+        }),
+      });
+    }
 
     return Response.json({
       id_reserva: entrega.id_reserva,
