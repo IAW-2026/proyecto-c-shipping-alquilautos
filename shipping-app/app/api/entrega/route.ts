@@ -30,7 +30,6 @@ export async function POST(req: Request) {
         id_reserva: body.id_reserva,
         id_vehiculo: body.id_vehiculo,
         id_propietario: body.id_propietario,
-        id_comprador: body.id_comprador,
         id_alquilador: body.id_alquilador,
         observaciones: body.observaciones,
 
