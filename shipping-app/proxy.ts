@@ -36,9 +36,7 @@ export default clerkMiddleware(async (auth, request) => {
 export const config = {
   matcher: [
     //en que rutas corre el middleware
-    // Protege todas las rutas excepto _next y archivos estáticos
-    "/((?!_next|.*\\..*).*)",
-    // Siempre ejecuta para rutas de API
-    "/api/(.*)",
+    // Protege todas las rutas excepto _next, las API's y archivos estáticos
+    "/((?!_next|api|.*\\..*).*)",
   ],
 };
