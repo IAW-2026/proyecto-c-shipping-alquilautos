@@ -1,3 +1,9 @@
+/*luego de modificar hacer:
+  - borrar carpeta generated/prisma
+  - npx prisma migrate dev --name nombre-migracion
+  - npx prisma generate 
+*/
+
 
 generator client {
   provider = "prisma-client-js"
@@ -45,7 +51,7 @@ model Coordinacion {
                                                                                                                 //si elimina la Entrega se eliminan todas las coordinaciones asociadas
   
   tipo                   TipoCoordinacion
-  fecha                  String             //YYYY-MM-DD
+  fecha                  DateTime           @db.Date 
   hora_inicio_disponible String             // Ej: "10:00"
   hora_fin_disponible    String             // Ej: "14:00"
   hora_seleccionada      String?            // Seleccionada posteriormente por el alquilador
