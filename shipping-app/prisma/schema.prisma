@@ -28,7 +28,7 @@ model Entrega {
   id_reserva       String         @unique // Relación 1 a 1 con la Seller App
   id_vehiculo      String
   id_propietario   String
-  id_comprador     String
+  id_alquilador    String
   
   estado           EstadoEntrega  @default(PENDIENTE)
   observaciones    String?        @db.Text
