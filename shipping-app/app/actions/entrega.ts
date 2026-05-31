@@ -1,6 +1,18 @@
 "use server"; //server action (funcion que puede llamar el cliente)
 
 import { prisma } from "@/lib/prisma";
+import { fromZonedTime } from "date-fns-tz";
+
+//para convertir a fecha-hora argentina
+const TZ = "America/Argentina/Buenos_Aires";
+function parseFechaHoraArgentina(fecha: Date | string, horaStr: string): Date {
+  const soloFecha =
+    typeof fecha === "string"
+      ? fecha.slice(0, 10)
+      : fecha.toISOString().slice(0, 10);
+  const isoSinZona = `${soloFecha}T${horaStr}:00`;
+  return fromZonedTime(isoSinZona, TZ);
+}
 
 export async function marcarComoEntregado(id_entrega: string) {
   const entrega = await prisma.entrega.findUnique({
@@ -25,12 +37,13 @@ export async function marcarComoEntregado(id_entrega: string) {
   }
 
   //fecha-hora actual
-  const ahora = new Date(); //server action toma fecha-hora del servidor (UTC)
+  const ahora = new Date(); //server action toma fecha-hora del servidor
 
   //fecha-hora de la entrega (junto fecha con hora)
-  const fechaHoraEntrega = new Date(coordEntrega.fecha);
-  const [h, m] = coordEntrega.hora_seleccionada.split(":");
-  fechaHoraEntrega.setHours(Number(h) + 3, Number(m), 0, 0); //+3 porque toma hora del servidor (UTC)
+  const fechaHoraEntrega = parseFechaHoraArgentina(
+    coordEntrega.fecha,
+    coordEntrega.hora_seleccionada,
+  );
 
   if (ahora < fechaHoraEntrega) {
     throw new Error("Aún no se puede marcar como entregado");
@@ -82,9 +95,10 @@ export async function marcarComoDevuelto(id_entrega: string) {
   const ahora = new Date(); //server action toma hora del servidor (UTC)
 
   //fecha-hora de la devolucion (junto fecha con hora)
-  const fechaHoraDevolucion = new Date(coordDevolucion.fecha);
-  const [h, m] = coordDevolucion.hora_seleccionada.split(":");
-  fechaHoraDevolucion.setHours(Number(h) + 3, Number(m), 0, 0); //+3 porque toma hora del servidor (UTC)
+  const fechaHoraDevolucion = parseFechaHoraArgentina(
+    coordDevolucion.fecha,
+    coordDevolucion.hora_seleccionada,
+  );
 
   if (ahora < fechaHoraDevolucion) {
     throw new Error("Aún no se puede marcar como devuelto");

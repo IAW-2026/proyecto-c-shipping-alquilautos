@@ -3,6 +3,17 @@
 import { useTransition } from "react";
 import { marcarComoEntregado, marcarComoDevuelto } from "@/app/actions/entrega";
 import { useRouter } from "next/navigation";
+import { fromZonedTime } from "date-fns-tz";
+
+const TZ = "America/Argentina/Buenos_Aires";
+function parseFechaHoraArgentina(fecha: Date | string, horaStr: string): Date {
+  const soloFecha =
+    typeof fecha === "string"
+      ? fecha.slice(0, 10)
+      : fecha.toISOString().slice(0, 10);
+  const isoSinZona = `${soloFecha}T${horaStr}:00`;
+  return fromZonedTime(isoSinZona, TZ);
+}
 
 interface Props {
   entrega: any;
@@ -25,14 +36,16 @@ export default function EntregaModal({ entrega, onClose }: Props) {
   const ahora = new Date(); //client component toma fecha-hora del navegador
 
   //fecha-hora de la entrega (junto fecha con hora)
-  const fechaHoraEntrega = new Date(coordEntrega.fecha);
-  const [he, me] = coordEntrega.hora_seleccionada.split(":");
-  fechaHoraEntrega.setHours(Number(he), Number(me), 0, 0);
+  const fechaHoraEntrega = parseFechaHoraArgentina(
+    coordEntrega.fecha,
+    coordEntrega.hora_seleccionada,
+  );
 
   //fecha-hora de la devolucion (junto fecha con hora)
-  const fechaHoraDevolucion = new Date(coordDevolucion.fecha);
-  const [hd, md] = coordDevolucion.hora_seleccionada.split(":");
-  fechaHoraDevolucion.setHours(Number(hd), Number(md), 0, 0);
+  const fechaHoraDevolucion = parseFechaHoraArgentina(
+    coordDevolucion.fecha,
+    coordDevolucion.hora_seleccionada,
+  );
 
   const puedeEntregar =
     entrega.estado === "COORDINADA" && ahora >= fechaHoraEntrega;
