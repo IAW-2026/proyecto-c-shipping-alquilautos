@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { marcarComoEntregado } from "@/app/actions/entrega";
+import { marcarComoEntregado, marcarComoDevuelto } from "@/app/actions/entrega";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -17,21 +17,45 @@ export default function EntregaModal({ entrega, onClose }: Props) {
     (c: any) => c.tipo === "ENTREGA",
   );
 
+  const coordDevolucion = entrega.coordinaciones.find(
+    (c: any) => c.tipo === "DEVOLUCION",
+  );
+
   //fecha-hora actual
-  const ahora = new Date();
+  const ahora = new Date(); //client component toma fecha-hora del navegador
 
   //fecha-hora de la entrega (junto fecha con hora)
   const fechaHoraEntrega = new Date(coordEntrega.fecha);
-  const [h, m] = coordEntrega.hora_seleccionada.split(":");
-  fechaHoraEntrega.setHours(Number(h), Number(m), 0, 0);
+  const [he, me] = coordEntrega.hora_seleccionada.split(":");
+  fechaHoraEntrega.setHours(Number(he), Number(me), 0, 0);
+
+  //fecha-hora de la devolucion (junto fecha con hora)
+  const fechaHoraDevolucion = new Date(coordDevolucion.fecha);
+  const [hd, md] = coordDevolucion.hora_seleccionada.split(":");
+  fechaHoraDevolucion.setHours(Number(hd), Number(md), 0, 0);
 
   const puedeEntregar =
     entrega.estado === "COORDINADA" && ahora >= fechaHoraEntrega;
+
+  const puedeDevolver =
+    entrega.estado === "ENTREGADO" && ahora >= fechaHoraDevolucion;
 
   const handleEntregar = () => {
     startTransition(async () => {
       try {
         await marcarComoEntregado(entrega.id);
+        router.refresh();
+        onClose();
+      } catch (err: any) {
+        alert(err.message);
+      }
+    });
+  };
+
+  const handleDevolver = () => {
+    startTransition(async () => {
+      try {
+        await marcarComoDevuelto(entrega.id);
         router.refresh();
         onClose();
       } catch (err: any) {
@@ -75,6 +99,16 @@ export default function EntregaModal({ entrega, onClose }: Props) {
             </button>
           ) : (
             <span className="text-sm text-gray-500">Aún no habilitado</span>
+          )}
+
+          {puedeDevolver && (
+            <button
+              onClick={handleDevolver}
+              disabled={pending}
+              className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded cursor-pointer transition"
+            >
+              {pending ? "Procesando..." : "Marcar como DEVUELTO"}
+            </button>
           )}
         </div>
       </div>
