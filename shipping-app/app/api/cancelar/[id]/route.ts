@@ -1,0 +1,85 @@
+/*cancelar una entrega  
+  - puede acceder: buyer/seller 
+*/
+//agregar: si el estado es pendiente y se cancela avisar a gaston
+
+import { prisma } from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    //autenticacion de usuario
+    const { userId, sessionClaims } = await auth();
+
+    if (!userId) {
+      return Response.json({ error: "No autenticado" }, { status: 401 });
+    }
+
+    //chequeo role
+    const role = (sessionClaims?.publicMetadata as any)?.role;
+
+    if (role !== "buyer" && role !== "seller") {
+      return Response.json({ error: "No autorizado" }, { status: 403 });
+    }
+
+    const { id } = await params;
+
+    // Busca la entrega usando el id_reserva
+    const entrega = await prisma.entrega.findUnique({
+      where: {
+        id_reserva: id,
+      },
+    });
+
+    if (!entrega) {
+      return Response.json({ error: "Entrega no encontrada" }, { status: 404 });
+    }
+
+    //actualiza estado entrega
+    await prisma.entrega.update({
+      where: {
+        id: entrega.id,
+      },
+
+      data: {
+        estado: "CANCELADO",
+      },
+    });
+
+    //actualiza estado coordinaciones de la entrega
+    await prisma.coordinacion.updateMany({
+      where: {
+        id_entrega: entrega.id,
+      },
+
+      data: {
+        estado: "CANCELADA",
+      },
+    });
+
+    //crea nuevo registro en la tabla HistorialEstado
+    await prisma.historialEstado.create({
+      data: {
+        id_entrega: entrega.id,
+        estado: "CANCELADO",
+        descripcion: "Entrega cancelada",
+      },
+    });
+
+    return Response.json({
+      id_reserva: entrega.id_reserva,
+      id_entrega: entrega.id,
+      estado: "CANCELADO",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return Response.json(
+      { error: "Error cancelando entrega" },
+      { status: 500 },
+    );
+  }
+}
