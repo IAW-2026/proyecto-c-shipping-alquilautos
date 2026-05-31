@@ -1,4 +1,4 @@
-"use server";
+"use server"; //server action (funcion que puede llamar el cliente)
 
 import { prisma } from "@/lib/prisma";
 

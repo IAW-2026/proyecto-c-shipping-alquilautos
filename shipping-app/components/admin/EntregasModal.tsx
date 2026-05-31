@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { marcarComoEntregado } from "@/app/actions/entrega";
+import { useRouter } from "next/navigation";
 
 interface Props {
   entrega: any;
@@ -10,6 +11,7 @@ interface Props {
 
 export default function EntregaModal({ entrega, onClose }: Props) {
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
 
   const coordEntrega = entrega.coordinaciones.find(
     (c: any) => c.tipo === "ENTREGA",
@@ -30,6 +32,7 @@ export default function EntregaModal({ entrega, onClose }: Props) {
     startTransition(async () => {
       try {
         await marcarComoEntregado(entrega.id);
+        router.refresh();
         onClose();
       } catch (err: any) {
         alert(err.message);
