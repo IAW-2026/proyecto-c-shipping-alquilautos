@@ -1,13 +1,12 @@
 "use client"; //porque agrego para que resalte el link en el que se encuentra
 
 import Link from "next/link";
-import { Truck, LayoutDashboard, Package } from "lucide-react";
+import { Truck, LayoutDashboard } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/entregas", label: "Entregas", icon: Truck },
-  { href: "/coordinaciones", label: "Coordinaciones", icon: Package },
 ];
 
 export default function Sidebar() {
