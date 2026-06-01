@@ -1,4 +1,4 @@
-/*obtener horarios seleccionados de una entrega
+/*obtener horarios seleccionados de una entrega   
   - puede acceder: seller
 */
 import { prisma } from "@/lib/prisma";

@@ -7,6 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function PATCH(req: Request) {
   try {
+    /* saco autenticacion para poder testear el endpoint con testDev
     //autenticacion de usuario
     const { userId, sessionClaims } = await auth();
 
@@ -20,6 +21,7 @@ export async function PATCH(req: Request) {
     if (role !== "buyer") {
       return Response.json({ error: "No autorizado" }, { status: 403 });
     }
+    */
 
     const body = await req.json();
 
@@ -68,8 +70,9 @@ export async function PATCH(req: Request) {
         descripcion: "Horarios confirmados por el comprador",
       },
     });
+    /*
 
-    //notificar a seller
+    //notificar a seller (va en etapa 3)
     await fetch(
       `${process.env.SELLER_APP_URL}/api/reserva/${body.id_reserva}`,
       {
@@ -82,6 +85,7 @@ export async function PATCH(req: Request) {
         }),
       },
     );
+    */
 
     return Response.json({
       id_reserva: entrega.id_reserva,

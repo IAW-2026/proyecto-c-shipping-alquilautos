@@ -1,4 +1,4 @@
-/*consultar estado de una entrega
+/*consultar estado de una entrega   
   - puede acceder: buyer/seller
 */
 
