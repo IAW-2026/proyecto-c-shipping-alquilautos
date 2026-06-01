@@ -100,7 +100,7 @@ function SectionDivider({ label }: { label: string }) {
 function Hint({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-4 flex items-start gap-2 rounded-md border border-gray-100 bg-gray-50 px-3 py-2 text-[12px] text-gray-500 dark:border-gray-800 dark:bg-gray-900">
-      <span className="mt-0.5 shrink-0">ℹ️</span>
+      <span className="mt-0.5 shrink-0">💡</span>
       <span>{children}</span>
     </div>
   );
@@ -556,7 +556,7 @@ export default function TestPanelPage() {
   const [activeTab, setActiveTab] = useState<Tab>("crear");
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-gray-50 dark:bg-transparent">
       <div className="mx-auto max-w-2xl px-4 py-10">
         {/* Header */}
         <div className="mb-6">
