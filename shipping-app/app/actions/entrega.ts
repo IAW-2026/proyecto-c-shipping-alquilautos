@@ -63,6 +63,21 @@ export async function marcarComoEntregado(id_entrega: string) {
       descripcion: "Entrega realizada por operador logístico",
     },
   });
+  /* (va en etapa 3) 
+  //notificar a seller
+  await fetch(
+    `${process.env.SELLER_APP_URL}/api/reserva/${entrega.id_reserva}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        estado: "ENTREGADO",
+      }),
+    },
+  );
+  */
 
   return updated;
 }
@@ -118,6 +133,22 @@ export async function marcarComoDevuelto(id_entrega: string) {
       descripcion: "Vehículo devuelto por cliente",
     },
   });
+
+  /* (va en etapa 3) 
+  //notificar a seller
+  await fetch(
+    `${process.env.SELLER_APP_URL}/api/reserva/${entrega.id_reserva}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        estado: "ENTREGADO",
+      }),
+    },
+  );
+  */
 
   return updated;
 }
