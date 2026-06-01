@@ -196,7 +196,7 @@ function TabCrear() {
         un historial inicial en estado PENDIENTE.
       </Hint>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <FieldLabel>id_reserva</FieldLabel>
           <Input value={fields.id_reserva} onChange={set("id_reserva")} />
@@ -225,7 +225,7 @@ function TabCrear() {
 
       <SectionDivider label="Coordinación de entrega" />
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div>
           <FieldLabel>fecha_inicio</FieldLabel>
           <Input
@@ -254,7 +254,7 @@ function TabCrear() {
 
       <SectionDivider label="Coordinación de devolución" />
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div>
           <FieldLabel>fecha_fin</FieldLabel>
           <Input
@@ -398,7 +398,7 @@ function TabHorario() {
 
       <SectionDivider label="Horarios seleccionados" />
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <FieldLabel>hora_seleccionada (tipo ENTREGA)</FieldLabel>
           <Input type="time" value={horaEntrega} onChange={setHoraEntrega} />
@@ -499,7 +499,7 @@ function TabCancelar() {
         <Input value={idReserva} onChange={setIdReserva} />
       </div>
 
-      <div className="mt-3 rounded-md border border-gray-100 bg-gray-50 px-3 py-2 font-mono text-[12px] text-gray-500 dark:border-gray-800 dark:bg-gray-900">
+      <div className="mt-3 rounded-md border border-gray-100 bg-gray-50 px-3 py-2 font-mono text-[12px] text-gray-500 break-all dark:border-gray-800 dark:bg-gray-900">
         PATCH /api/cancelar/
         <span className="font-medium text-gray-800 dark:text-gray-200">
           {idReserva || "[id]"}
@@ -570,7 +570,7 @@ export default function TestPanelPage() {
         </div>
 
         {/* Tabs */}
-        <div className="mb-1 flex gap-1 border-b border-gray-200 dark:border-gray-800">
+        <div className="mb-1 flex gap-1 overflow-x-auto border-b border-gray-200 dark:border-gray-800">
           {TABS.map((tab) => (
             <button
               key={tab.id}
@@ -593,7 +593,10 @@ export default function TestPanelPage() {
         <div className="mt-4 rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900">
           {/* Card header */}
           {TABS.filter((t) => t.id === activeTab).map((tab) => (
-            <div key={tab.id} className="mb-4 flex items-start justify-between">
+            <div
+              key={tab.id}
+              className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between"
+            >
               <div>
                 <h2 className="text-[15px] font-medium text-gray-900 dark:text-gray-100">
                   {tab.label}
