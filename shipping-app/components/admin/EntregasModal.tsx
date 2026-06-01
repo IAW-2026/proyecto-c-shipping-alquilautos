@@ -83,7 +83,7 @@ export default function EntregaModal({ entrega, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="relative bg-slate-900 border border-slate-700/50 text-slate-100 p-7 rounded-2xl w-[420px] shadow-2xl shadow-black/40">
+      <div className="relative bg-slate-900 border border-slate-700/50 text-slate-100 p-7 rounded-2xl w-[420px] max-w-[calc(100vw-2rem)] shadow-2xl shadow-black/40">
         {/* X para cerrar */}
         <button
           onClick={onClose}

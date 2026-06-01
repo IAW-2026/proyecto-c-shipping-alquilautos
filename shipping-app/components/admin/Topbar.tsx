@@ -5,7 +5,7 @@ export default function Topbar() {
     <div className="h-14 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-950">
       <input
         placeholder="Buscar entrega, reserva..."
-        className="bg-slate-900 px-3 py-1 rounded w-96 text-sm"
+        className="bg-slate-900 px-3 py-1 rounded w-full max-w-xs sm:max-w-sm md:max-w-md text-sm"
       />
 
       <UserButton
