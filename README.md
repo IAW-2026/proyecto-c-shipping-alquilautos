@@ -10,7 +10,8 @@
 ## Tener en cuenta para utilizar la aplicacion:
 
     - Esta app solo seria usada por un usuario con role "admin".
-    - El usuario para utilizar la app debe ser el otorgado, que tiene role = "admin"; de lo contrario se solicitará ingresar con un usuario que cuente con los permisos necesarios.
+    - El usuario para utilizar la app debe ser el otorgado, que tiene role = "admin"; de lo contrario se 
+    solicitará ingresar con un usuario que cuente con los permisos necesarios.
 
 ## Descripción breve
 
