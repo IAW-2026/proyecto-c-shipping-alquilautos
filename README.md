@@ -62,4 +62,4 @@ Permite:
 - Las rutas de API incluyen autenticación Clerk preparada, pero las verificaciones están comentadas en algunos endpoints para facilitar pruebas locales.
 - La notificación a Seller-App mediante `SELLER_APP_URL` está contemplada en el código pero permanece comentada como etapa de integración futura.
 - Como decision de diseño se eligio que el middleware (proxy.ts) no proteja los endpoints, sino que en cada uno se implementa la autenticacion de usuario y chequeo de role.
-- A futuro se puede implementar una visualizacion del historial de estados de una entrega
+- A futuro se puede implementar una visualizacion del historial de estados de una entrega.
