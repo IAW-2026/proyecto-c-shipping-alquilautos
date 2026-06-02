@@ -40,6 +40,12 @@ export async function PATCH(
     }
 
     const estadoAnterior = entrega.estado;
+    if (entrega.estado === "DEVUELTO" || entrega.estado === "CANCELADO") {
+      return Response.json(
+        { error: "No se puede cancelar una entrega devuelta" },
+        { status: 400 },
+      );
+    }
 
     //actualiza estado entrega
     await prisma.entrega.update({
