@@ -1,6 +1,12 @@
+/*luego de modificar hacer:
+  - borrar carpeta generated/prisma
+  - npx prisma migrate dev --name nombre-migracion
+  - npx prisma generate 
+*/
+
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../app/generated/prisma"
 }
 
@@ -16,57 +22,56 @@ datasource db {
 
 /// Representa cada proceso de entrega y devolución de un vehículo asociado a una reserva.
 model Entrega {
-  id              String         @id @default(uuid()) @map("idEntrega")
+  id              String         @id @default(uuid()) @map("id_entrega")
   
   // Referencias a entidades de otras WebApps (Seller App / Clerk)
-  idReserva       String         @unique // Relación 1 a 1 con la Seller App
-  idVehiculo      String
-  idPropietario   String
-  idComprador     String
+  id_reserva       String         @unique // Relación 1 a 1 con la Seller App
+  id_vehiculo      String
+  id_propietario   String
+  id_alquilador    String
   
-  estado          EstadoEntrega  @default(PENDIENTE)
-  observaciones   String?        @db.Text
+  estado           EstadoEntrega  @default(PENDIENTE)
+  observaciones    String?        @db.Text
   
   // Relaciones internas (1 a N)
-  coordinaciones  Coordinacion[]
-  historial       HistorialEstado[]
+  coordinaciones   Coordinacion[]
+  historial        HistorialEstado[]
 
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 }
 
 /// Gestiona la coordinación de la entrega y devolución del vehículo entre propietario y alquilador.
 model Coordinacion {
-  id                   String             @id @default(uuid()) @map("idCoordinacion")
+  id                   String             @id @default(uuid()) @map("id_coordinacion")
   
   // Relación N a 1 con Entrega
-  idEntrega            String
-  entrega              Entrega            @relation(fields: [idEntrega], references: [id], onDelete: Cascade)   //para que cada coordinacion este atada a una entrega
+  id_entrega            String
+  entrega              Entrega            @relation(fields: [id_entrega], references: [id], onDelete: Cascade)   //para que cada coordinacion este atada a una entrega
                                                                                                                 //si elimina la Entrega se eliminan todas las coordinaciones asociadas
   
-  tipo                 TipoCoordinacion
-  fecha                DateTime           @db.Date
-  horaInicioDisponible String             // Ej: "10:00"
-  horaFinDisponible    String             // Ej: "14:00"
-  horaSeleccionada     String?            // Seleccionada posteriormente por el alquilador
-  ubicacion            String
-  estado               EstadoCoordinacion @default(PENDIENTE)
+  tipo                   TipoCoordinacion
+  fecha                  DateTime           @db.Date 
+  hora_inicio_disponible String             // Ej: "10:00"
+  hora_fin_disponible    String             // Ej: "14:00"
+  hora_seleccionada      String?            // Seleccionada posteriormente por el alquilador
+  estado                 EstadoCoordinacion @default(PENDIENTE)
 
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
 }
 
 /// Registra todos los cambios de estado de una entrega para trazabilidad.
 model HistorialEstado {
-  id              String        @id @default(uuid()) @map("idHistorial")
+  id              String        @id @default(uuid()) @map("id_historial")
   
   // Relación N a 1 con Entrega
-  idEntrega       String
-  entrega         Entrega       @relation(fields: [idEntrega], references: [id], onDelete: Cascade)
+  id_entrega       String
+  entrega          Entrega       @relation(fields: [id_entrega], references: [id], onDelete: Cascade)
   
-  estado          EstadoEntrega
-  fechaHora       DateTime      @default(now())
-  descripcion     String?       @db.Text
+  estado           EstadoEntrega
+  fecha_hora       DateTime      @default(now())
+  descripcion      String?       @db.Text
 }
 
 
@@ -74,13 +79,11 @@ model HistorialEstado {
 // ENUMS
 // ------------------------------------------------------
 enum EstadoEntrega {
-  PENDIENTE
-  COORDINANDO
-  COORDINADA
-  ENTREGADO
-  EN_USO
-  DEVUELTO
-  CANCELADO
+  PENDIENTE   //defecto (cuando seller acepta la reserva)
+  COORDINADA  //cuando buyer me envia hora seleccionada
+  ENTREGADO   //cuando llega fecha y hora acordada
+  DEVUELTO    //finalizado el plazo de alquiler
+  CANCELADO   //si buyer/payments cancelan
 }
 
 enum TipoCoordinacion {
@@ -90,7 +93,6 @@ enum TipoCoordinacion {
 
 enum EstadoCoordinacion {
   PENDIENTE
-  CONFIRMADA
-  COMPLETADA
+  CONFIRMADA    //cuando buyer manda hora seleccionada
   CANCELADA
 }

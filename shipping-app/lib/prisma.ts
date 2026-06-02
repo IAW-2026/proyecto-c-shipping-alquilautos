@@ -10,7 +10,7 @@ import { Pool } from "pg";
 
 //Crea un pool de conexiones reutilizables hacia Neon/Postgres
 const pool = new Pool({
-  connectionString: process.env.POSTGRES_PRISMA_URL,
+  connectionString: process.env.DATABASE_URL,
 });
 
 //Crea el adaptador que permite a Prisma usar el pool de 'pg'
