@@ -56,9 +56,10 @@ Permite:
   -> Confirmar horarios seleccionados con `PATCH /api/entrega horario`.
 - PATCH Cancelar: -> Cancelar una entrega con `PATCH /api/cancelar/[id]`.
 
-## Notas para la corrección
+## Notas para la corrección y implementaciones futuras
 
 - La página `/test` permite crear entregas, consultar horarios, confirmar horas seleccionadas y cancelar procesos sin necesidad de otro frontend (muy saturada).
 - Las rutas de API incluyen autenticación Clerk preparada, pero las verificaciones están comentadas en algunos endpoints para facilitar pruebas locales.
 - La notificación a Seller-App mediante `SELLER_APP_URL` está contemplada en el código pero permanece comentada como etapa de integración futura.
 - Como decision de diseño se eligio que el middleware (proxy.ts) no proteja los endpoints, sino que en cada uno se implementa la autenticacion de usuario y chequeo de role.
+- A futuro se puede implementar una visualizacion del historial de estados de una entrega
