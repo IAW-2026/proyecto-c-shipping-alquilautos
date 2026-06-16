@@ -144,7 +144,7 @@ export async function marcarComoDevuelto(id_entrega: string) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        estado: "ENTREGADO",
+        estado: "DEVUELTO",
       }),
     },
   );
