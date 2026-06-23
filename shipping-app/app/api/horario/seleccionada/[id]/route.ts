@@ -19,7 +19,7 @@ export async function GET(
     //chequeo role
     const role = (sessionClaims?.publicMetadata as any)?.role;
 
-    if (role !== "seller") {
+    if (role !== "propietario" && role !== "adminSeller") {
       return Response.json({ error: "No autorizado" }, { status: 403 });
     }
 

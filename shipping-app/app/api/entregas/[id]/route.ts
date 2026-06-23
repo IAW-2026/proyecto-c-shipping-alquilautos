@@ -2,11 +2,6 @@
   - puede acceder: buyer/seller
 */
 
-/*cancelar una entrega             
-  - puede acceder: buyer/seller 
-  - si se cancela y el estado es PENDIENTE (fue el buyer) -> avisar a seller
-*/
-
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
@@ -25,7 +20,12 @@ export async function GET(
     //chequeo role
     const role = (sessionClaims?.publicMetadata as any)?.role;
 
-    if (role !== "buyer" && role !== "seller") {
+    if (
+      role !== "alquilador" &&
+      role !== "adminBuyer" &&
+      role !== "propietario" &&
+      role !== "adminSeller"
+    ) {
       return Response.json({ error: "No autorizado" }, { status: 403 });
     }
 
@@ -58,12 +58,15 @@ export async function GET(
   }
 }
 
+/*cancelar una entrega             
+  - puede acceder: buyer/seller 
+  - si se cancela y el estado es PENDIENTE (fue el buyer) -> avisar a seller
+*/
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    /* saco autenticacion para poder testear el endpoint con testDev
     //autenticacion de usuario
     const { userId, sessionClaims } = await auth();
 
@@ -74,10 +77,15 @@ export async function PATCH(
     //chequeo role
     const role = (sessionClaims?.publicMetadata as any)?.role;
 
-    if (role !== "buyer" && role !== "seller") {
+    if (
+      role !== "alquilador" &&
+      role !== "adminBuyer" &&
+      role !== "propietario" &&
+      role !== "adminSeller"
+    ) {
       return Response.json({ error: "No autorizado" }, { status: 403 });
     }
-    */
+
     const { id } = await params;
 
     // Busca la entrega usando el id_reserva
@@ -130,20 +138,22 @@ export async function PATCH(
       },
     });
 
-    /* (va en etapa 3)
-    //notificar a seller 
+    //notificar a seller (cancelo buyer)
     if (estadoAnterior === "PENDIENTE") {
+      //obtengo token de la sesion actual
+      const { getToken } = await auth();
+      const token = await getToken();
       await fetch(`${process.env.SELLER_APP_URL}/api/reserva/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          estado: "CANCELADA",
+          estado: "Cancelada",
         }),
       });
     }
-    */
 
     return Response.json({
       id_reserva: entrega.id_reserva,
