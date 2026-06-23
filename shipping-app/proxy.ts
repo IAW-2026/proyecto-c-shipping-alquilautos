@@ -22,21 +22,13 @@ export default clerkMiddleware(async (auth, request) => {
     return redirectToSignIn();
   }
 
-  //obtencion de role
-  const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
-
-  // No admin
-  if (role !== "admin") {
-    return NextResponse.redirect(new URL("/unauthorized", request.url));
-  }
-
   return NextResponse.next();
 });
 
 export const config = {
   matcher: [
     //en que rutas corre el middleware
-    // Protege todas las rutas excepto _next, las API's y archivos estáticos
-    "/((?!_next|api|.*\\..*).*)",
+    // Protege todas las rutas excepto _next y archivos estáticos
+    "/((?!_next|.*\\..*).*)",
   ],
 };

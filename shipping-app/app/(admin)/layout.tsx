@@ -1,11 +1,25 @@
 import Sidebar from "@/components/admin/Sidebar";
 import Topbar from "@/components/admin/Topbar";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { userId, sessionClaims, redirectToSignIn } = await auth();
+  //No autenticado
+  if (!userId) {
+    return redirectToSignIn();
+  }
+  //obtencion de role
+  const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
+
+  // No admin
+  if (role !== "admin") {
+    redirect("/unauthorized");
+  }
   return (
     <div className="flex h-screen bg-slate-950 text-white overflow-hidden">
       <Sidebar />
