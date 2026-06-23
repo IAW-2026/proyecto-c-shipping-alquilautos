@@ -19,7 +19,7 @@ interface Props {
 
 export default function DashboardChart({ data }: Props) {
   return (
-    <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 h-80 flex flex-col justify-between">
+    <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 h-80 flex flex-col justify-between overflow-hidden">
       <h2 className="mb-4 font-semibold text-white">
         Distribucion semanal de actividad
       </h2>

@@ -7,7 +7,6 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function PATCH(req: Request) {
   try {
-    /* saco autenticacion para poder testear el endpoint con testDev
     //autenticacion de usuario
     const { userId, sessionClaims } = await auth();
 
@@ -18,10 +17,9 @@ export async function PATCH(req: Request) {
     //chequeo role
     const role = (sessionClaims?.publicMetadata as any)?.role;
 
-    if (role !== "buyer") {
+    if (role !== "alquilador" && role !== "adminBuyer") {
       return Response.json({ error: "No autorizado" }, { status: 403 });
     }
-    */
 
     const body = await req.json();
 
@@ -70,22 +68,26 @@ export async function PATCH(req: Request) {
         descripcion: "Horarios confirmados por el comprador",
       },
     });
-    /*
 
-    //notificar a seller (va en etapa 3)
-    await fetch(
+    //notificar a seller
+    //obtengo token de la sesion actual
+    const { getToken } = await auth();
+    const token = await getToken();
+    console.log("ANTES FETCH");
+    const respuesta = await fetch(
       `${process.env.SELLER_APP_URL}/api/reserva/${body.id_reserva}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, //envio el token
         },
         body: JSON.stringify({
-          estado: "COORDINADA",
+          estado: "Coordinada",
         }),
       },
     );
-    */
+    console.log("Status de App B:", respuesta.status);
 
     return Response.json({
       id_reserva: entrega.id_reserva,

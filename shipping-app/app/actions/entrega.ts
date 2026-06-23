@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { fromZonedTime } from "date-fns-tz";
+import { auth } from "@clerk/nextjs/server";
 
 //para convertir a fecha-hora argentina
 const TZ = "America/Argentina/Buenos_Aires";
@@ -63,21 +64,24 @@ export async function marcarComoEntregado(id_entrega: string) {
       descripcion: "Entrega realizada por operador logístico",
     },
   });
-  /* (va en etapa 3) 
+
   //notificar a seller
+  //obtengo token de la sesion actual
+  const { getToken } = await auth();
+  const token = await getToken();
   await fetch(
     `${process.env.SELLER_APP_URL}/api/reserva/${entrega.id_reserva}`,
     {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, //envio el token
       },
       body: JSON.stringify({
-        estado: "ENTREGADO",
+        estado: "Entregado",
       }),
     },
   );
-  */
 
   return updated;
 }
@@ -134,21 +138,23 @@ export async function marcarComoDevuelto(id_entrega: string) {
     },
   });
 
-  /* (va en etapa 3) 
   //notificar a seller
+  //obtengo token de la sesion actual
+  const { getToken } = await auth();
+  const token = await getToken();
   await fetch(
     `${process.env.SELLER_APP_URL}/api/reserva/${entrega.id_reserva}`,
     {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, //envio el token
       },
       body: JSON.stringify({
-        estado: "ENTREGADO",
+        estado: "Devuelto",
       }),
     },
   );
-  */
 
   return updated;
 }

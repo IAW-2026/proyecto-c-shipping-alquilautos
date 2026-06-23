@@ -472,7 +472,7 @@ function TabCancelar() {
     setResult("loading");
     const t = Date.now();
     try {
-      const r = await fetch(`/api/cancelar/${encodeURIComponent(idReserva)}`, {
+      const r = await fetch(`/api/entregas/${encodeURIComponent(idReserva)}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
       });
