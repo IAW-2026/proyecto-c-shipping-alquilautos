@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     //chequeo role
     const role = (sessionClaims?.publicMetadata as any)?.role;
 
-    if (role !== "propietario" || role !== "adminSeller") {
+    if (role !== "propietario" && role !== "adminSeller") {
       return Response.json({ error: "No autorizado" }, { status: 403 });
     }
 
