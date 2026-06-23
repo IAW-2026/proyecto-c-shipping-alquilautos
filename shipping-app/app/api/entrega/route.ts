@@ -34,20 +34,12 @@ export async function POST(req: Request) {
         observaciones: body.observaciones,
 
         coordinaciones: {
-          create: [
-            {
-              tipo: "ENTREGA",
-              hora_inicio_disponible: body.hora_inicio_entrega,
-              hora_fin_disponible: body.hora_fin_entrega,
-              fecha: body.fecha_inicio,
-            },
-            {
-              tipo: "DEVOLUCION",
-              hora_inicio_disponible: body.hora_inicio_devolucion,
-              hora_fin_disponible: body.hora_fin_devolucion,
-              fecha: body.fecha_fin,
-            },
-          ],
+          create: body.coordinaciones.map((c: any) => ({
+            tipo: c.tipo.toUpperCase(), // "entrega" → "ENTREGA"
+            fecha: c.fecha,
+            hora_inicio_disponible: c.hora_inicio_disponible,
+            hora_fin_disponible: c.hora_fin_disponible,
+          })),
         },
 
         historial: {
