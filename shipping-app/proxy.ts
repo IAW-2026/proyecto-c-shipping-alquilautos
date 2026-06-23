@@ -15,7 +15,7 @@ export default clerkMiddleware(async (auth, request) => {
   }
 
   //Si la ruta NO es pública, obligamos a que el usuario esté autenticado
-  const { userId, sessionClaims, redirectToSignIn } = await auth();
+  const { userId, redirectToSignIn } = await auth();
 
   //No autenticado
   if (!userId) {
