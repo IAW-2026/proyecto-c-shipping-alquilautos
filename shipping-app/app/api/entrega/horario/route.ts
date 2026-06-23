@@ -70,12 +70,16 @@ export async function PATCH(req: Request) {
     });
 
     //notificar a seller
+    //obtengo token de la sesion actual
+    const { getToken } = await auth();
+    const token = await getToken();
     await fetch(
       `${process.env.SELLER_APP_URL}/api/reserva/${body.id_reserva}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, //envio el token
         },
         body: JSON.stringify({
           estado: "Coordinada",

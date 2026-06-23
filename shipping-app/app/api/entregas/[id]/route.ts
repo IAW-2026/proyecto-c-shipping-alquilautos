@@ -147,7 +147,7 @@ export async function PATCH(
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, //envio el token
         },
         body: JSON.stringify({
           estado: "Cancelada",
