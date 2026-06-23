@@ -73,7 +73,8 @@ export async function PATCH(req: Request) {
     //obtengo token de la sesion actual
     const { getToken } = await auth();
     const token = await getToken();
-    await fetch(
+    console.log("ANTES FETCH");
+    const respuesta = await fetch(
       `${process.env.SELLER_APP_URL}/api/reserva/${body.id_reserva}`,
       {
         method: "PATCH",
@@ -86,6 +87,7 @@ export async function PATCH(req: Request) {
         }),
       },
     );
+    console.log("Status de App B:", respuesta.status);
 
     return Response.json({
       id_reserva: entrega.id_reserva,
