@@ -108,7 +108,7 @@ export default function EntregaModal({ entrega, onClose }: Props) {
           <p className="text-xs font-medium text-slate-500 uppercase tracking-widest mb-1">
             Reserva
           </p>
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-white break-all">
             #{entrega.id_reserva}
           </h2>
         </div>
