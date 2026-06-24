@@ -1,12 +1,13 @@
 "use client";
 
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  CartesianGrid,
 } from "recharts";
 
 interface Props {
@@ -25,7 +26,22 @@ export default function DashboardChart({ data }: Props) {
       </h2>
 
       <ResponsiveContainer width="100%" height={240}>
-        <LineChart data={data} accessibilityLayer>
+        <AreaChart data={data} accessibilityLayer>
+          <defs>
+            <linearGradient id="gradEntregas" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#10b981" stopOpacity={0.35} />
+              <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+            </linearGradient>
+            <linearGradient id="gradDevoluciones" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#64748b" stopOpacity={0.35} />
+              <stop offset="95%" stopColor="#64748b" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#1e293b"
+            vertical={false}
+          />
           <XAxis dataKey="day" stroke="#64748b" />
 
           <YAxis stroke="#64748b" tickFormatter={(value) => `${value}%`} />
@@ -40,22 +56,24 @@ export default function DashboardChart({ data }: Props) {
             }}
           />
 
-          <Line
+          <Area
             type="monotone"
             dataKey="entregas"
             stroke="#10b981"
             strokeWidth={2}
-            dot={{ r: 4 }}
+            fill="url(#gradEntregas)"
+            activeDot={{ r: 5, strokeWidth: 2 }}
           />
 
-          <Line
+          <Area
             type="monotone"
             dataKey="devoluciones"
             stroke="#64748b"
             strokeWidth={2}
-            dot={{ r: 4 }}
+            fill="url(#gradDevoluciones)"
+            activeDot={{ r: 5, strokeWidth: 2 }}
           />
-        </LineChart>
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );

@@ -27,6 +27,9 @@ export async function PATCH(req: Request) {
     const entrega = await prisma.entrega.findUnique({
       where: {
         id_reserva: body.id_reserva,
+        ...(role !== "adminBuyer" && {
+          id_alquilador: userId,
+        }),
       },
     });
 
