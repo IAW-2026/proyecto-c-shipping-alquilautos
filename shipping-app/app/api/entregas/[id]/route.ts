@@ -81,7 +81,8 @@ export async function PATCH(
       role !== "alquilador" &&
       role !== "adminBuyer" &&
       role !== "propietario" &&
-      role !== "adminSeller"
+      role !== "adminSeller" &&
+      role !== "admin"
     ) {
       return Response.json({ error: "No autorizado" }, { status: 403 });
     }
