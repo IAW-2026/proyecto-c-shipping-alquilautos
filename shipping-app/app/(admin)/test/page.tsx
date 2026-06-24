@@ -7,10 +7,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import {
+  marcarComoEntregado,
+  marcarComoDevuelto,
+} from "@/app/actions/marcarEntrega";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Tab = "crear" | "horario" | "cancelar";
+type Tab = "crear" | "horario" | "cancelar" | "estado";
 
 interface ApiResponse {
   status: number;
@@ -520,6 +524,79 @@ function TabCancelar() {
   );
 }
 
+// ─── Tab: marcar como entregado/devuelto ───────────────────────────────────────
+function TabEstado() {
+  const [id_entrega, setIdReserva] = useState("id_entrega");
+  const [result, setResult] = useState<ApiResponse | null | "loading">(null);
+
+  return (
+    <div>
+      <Hint>Permite marcar la entrega como ENTREGADA o DEVUELTA.</Hint>
+
+      <div>
+        <FieldLabel>id_entrega</FieldLabel>
+        <Input value={id_entrega} onChange={setIdReserva} />
+      </div>
+
+      <div className="mt-4 flex gap-2">
+        {/* ENTREGADO */}
+        <button
+          onClick={async () => {
+            setResult("loading");
+
+            try {
+              const data = await marcarComoEntregado(id_entrega);
+
+              setResult({
+                status: 200,
+                data,
+                ms: 0,
+              });
+            } catch (e) {
+              setResult({
+                status: 500,
+                data: { error: (e as Error).message },
+                ms: 0,
+              });
+            }
+          }}
+          className="rounded-md bg-emerald-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-emerald-700"
+        >
+          ✔ Marcar entregado
+        </button>
+
+        {/* DEVUELTO */}
+        <button
+          onClick={async () => {
+            setResult("loading");
+
+            try {
+              const data = await marcarComoDevuelto(id_entrega);
+
+              setResult({
+                status: 200,
+                data,
+                ms: 0,
+              });
+            } catch (e) {
+              setResult({
+                status: 500,
+                data: { error: (e as Error).message },
+                ms: 0,
+              });
+            }
+          }}
+          className="rounded-md bg-blue-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-blue-700"
+        >
+          ↩ Marcar devuelto
+        </button>
+      </div>
+
+      <ResponseBox result={result} />
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 const TABS: {
@@ -548,6 +625,13 @@ const TABS: {
     label: "Cancelar",
     method: "PATCH",
     role: "buyer/seller",
+    roleVariant: "both",
+  },
+  {
+    id: "estado",
+    label: "Estado entrega",
+    method: "Server action",
+    role: "",
     roleVariant: "both",
   },
 ];
@@ -607,7 +691,9 @@ export default function TestPanelPage() {
                     ? "/api/entrega"
                     : tab.id === "horario"
                       ? "/api/entrega/horario"
-                      : "/api/cancelar/[id]"}
+                      : tab.id === "cancelar"
+                        ? "/api/cancelar/[id]"
+                        : ""}
                 </p>
               </div>
               <Badge variant={tab.roleVariant}>{tab.role}</Badge>
@@ -618,6 +704,7 @@ export default function TestPanelPage() {
           {activeTab === "crear" && <TabCrear />}
           {activeTab === "horario" && <TabHorario />}
           {activeTab === "cancelar" && <TabCancelar />}
+          {activeTab === "estado" && <TabEstado />}
         </div>
       </div>
     </div>
