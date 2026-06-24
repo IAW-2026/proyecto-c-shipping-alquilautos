@@ -78,7 +78,7 @@ export async function marcarComoEntregado(id_entrega: string) {
         Authorization: `Bearer ${token}`, //envio el token
       },
       body: JSON.stringify({
-        estado: "Entregado",
+        estado: "Entregada",
       }),
     },
   );
@@ -151,7 +151,7 @@ export async function marcarComoDevuelto(id_entrega: string) {
         Authorization: `Bearer ${token}`, //envio el token
       },
       body: JSON.stringify({
-        estado: "Devuelto",
+        estado: "Finalizada",
       }),
     },
   );
