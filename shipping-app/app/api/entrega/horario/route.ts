@@ -24,7 +24,7 @@ export async function PATCH(req: Request) {
     const body = await req.json();
 
     // Busca la entrega usando el id_reserva
-    const entrega = await prisma.entrega.findUnique({
+    const entrega = await prisma.entrega.findFirst({
       where: {
         id_reserva: body.id_reserva,
         ...(role !== "adminBuyer" && {
