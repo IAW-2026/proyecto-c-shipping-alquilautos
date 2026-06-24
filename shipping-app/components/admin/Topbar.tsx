@@ -93,7 +93,7 @@ export default function Topbar() {
         />
       </div>
 
-      {/* Modal — igual al de EntregasTable */}
+      {/* Modal */}
       {selectedEntrega && (
         <EntregaModal
           entrega={selectedEntrega}
