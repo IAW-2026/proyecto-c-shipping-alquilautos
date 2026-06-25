@@ -93,7 +93,7 @@ export default function EntregasTable({ entregas }: Props) {
       </div>
 
       {/* TABLA — solo desktop */}
-      <div className="hidden md:block bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="hidden md:block bg-slate-900 border border-slate-800 rounded-xl overflow-hidden overflow-y-auto max-h-[calc(100vh-225px)] scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent hover:scrollbar-thumb-slate-500">
         <table className="w-full text-sm">
           <thead className="bg-slate-800 text-slate-300">
             <tr>

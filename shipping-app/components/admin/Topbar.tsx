@@ -8,7 +8,7 @@ import { Search } from "lucide-react";
 
 export default function Topbar() {
   const [query, setQuery] = useState("");
-  const [resultado, setResultado] = useState<any>(null);
+  const [resultado, setResultado] = useState<any[]>([]);
   const [selectedEntrega, setSelectedEntrega] = useState<any>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -19,7 +19,7 @@ export default function Topbar() {
         wrapperRef.current &&
         !wrapperRef.current.contains(e.target as Node)
       ) {
-        setResultado(null);
+        setResultado([]);
         setQuery("");
       }
     }
@@ -29,13 +29,13 @@ export default function Topbar() {
 
   useEffect(() => {
     if (!query.trim()) {
-      setResultado(null);
+      setResultado([]);
       return;
     }
 
     const timeout = setTimeout(async () => {
-      const entrega = await buscarReserva(query.trim());
-      setResultado(entrega);
+      const entregas = await buscarReserva(query.trim());
+      setResultado(entregas);
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -63,23 +63,26 @@ export default function Topbar() {
           />
 
           {/* Dropdown resultado */}
-          {resultado && (
-            <div
-              onClick={() => {
-                setSelectedEntrega(resultado); //abre el modal con la entrega encontrada
-                setResultado(null);
-                setQuery("");
-              }}
-              className="absolute top-9 left-0 right-0 bg-slate-900 border border-slate-700 rounded-xl p-4 cursor-pointer hover:bg-slate-800/60 transition z-50 shadow-xl"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-white font-medium">
-                  Reserva #{resultado.id_reserva}
-                </span>
-                <span className="text-xs text-slate-400">
-                  {resultado.estado}
-                </span>
-              </div>
+          {resultado.length > 0 && (
+            <div className="absolute top-9 left-0 right-0 bg-slate-900 border border-slate-700 rounded-xl overflow-y-auto max-h-60 z-50 shadow-xl scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent hover:scrollbar-thumb-slate-500">
+              {resultado.map((entrega) => (
+                <div
+                  key={entrega.id}
+                  onClick={() => {
+                    setSelectedEntrega(entrega);
+                    setResultado([]);
+                    setQuery("");
+                  }}
+                  className="flex justify-between items-center px-4 py-3 hover:bg-slate-800/60 transition border-b border-slate-800 last:border-0 cursor-pointer"
+                >
+                  <span className="text-sm text-white font-medium">
+                    Reserva #{entrega.id_reserva}
+                  </span>
+                  <span className="text-xs text-slate-400">
+                    {entrega.estado}
+                  </span>
+                </div>
+              ))}
             </div>
           )}
         </div>

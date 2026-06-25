@@ -2,11 +2,26 @@
 
 import { prisma } from "@/lib/prisma";
 
-export async function buscarReserva(id_reserva: string) {
-  const entrega = await prisma.entrega.findFirst({
-    where: { id_reserva },
+export async function buscarReserva(query: string) {
+  const entregas = await prisma.entrega.findMany({
+    where: {
+      OR: [
+        {
+          id_reserva: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          id: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
     include: { coordinaciones: true },
   });
 
-  return entrega ?? null; //devuelve null si no encuentra nada
+  return entregas;
 }
