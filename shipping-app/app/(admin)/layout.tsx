@@ -21,15 +21,13 @@ export default async function AdminLayout({
     redirect("/unauthorized");
   }
   return (
-    <div className="flex h-screen bg-slate-950 text-white overflow-hidden">
+    <div className="flex h-screen bg-slate-950 text-white">
       <Sidebar />
 
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
 
-        <main className="p-6 overflow-y-auto md:overflow-hidden pb-20 md:pb-6">
-          {children}
-        </main>
+        <main className="p-6 overflow-y-auto pb-20 md:pb-6">{children}</main>
       </div>
     </div>
   );
