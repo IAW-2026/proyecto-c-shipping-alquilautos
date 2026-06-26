@@ -1,6 +1,11 @@
 export const dynamic = "force-dynamic";
 
-import StatCard from "@/components/admin/StatCard";
+import {
+  EntregasActivasCard,
+  DevolucionesCard,
+  PendientesCard,
+  CanceladasCard,
+} from "@/components/admin/StatCard";
 import DashboardChart from "@/components/admin/DashboardChart";
 import StatusChart from "@/components/admin/StatusChart";
 
@@ -29,24 +34,24 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <StatCard
+        <EntregasActivasCard
           title="Entregas activas"
           value={stats.entregasActivas}
           change={deliverysComparison.variation}
         />
 
-        <StatCard
+        <PendientesCard
           title="Pendientes de coordinar"
           value={stats.pendientesCoordinar}
         />
 
-        <StatCard
+        <DevolucionesCard
           title="Devoluciones esta semana"
           value={returnsComparison.current}
           change={returnsComparison.variation}
         />
 
-        <StatCard title="Canceladas" value={stats.canceladas} />
+        <CanceladasCard title="Canceladas" value={stats.canceladas} />
       </div>
 
       {/* Charts */}
