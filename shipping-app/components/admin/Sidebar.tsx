@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Truck, LayoutDashboard, Wrench } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -13,6 +14,9 @@ const links = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { user } = useUser();
+  const nombre = user?.fullName ?? user?.firstName ?? "Usuario";
+  const role = (user?.publicMetadata?.role as string) ?? "sin rol";
 
   return (
     <>
@@ -40,7 +44,7 @@ export default function Sidebar() {
           </h1>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="flex-1 space-y-2">
           {links.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
@@ -64,6 +68,27 @@ export default function Sidebar() {
             </Link>
           ))}
         </nav>
+        {user && (
+          <div className="mt-auto pt-4 border-t border-white/10 px-2">
+            <div className="flex items-center gap-3">
+              <Image
+                src={user.imageUrl}
+                alt={nombre}
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full object-cover border border-cyan-500/20"
+              />
+              <div className="flex flex-col min-w-0">
+                <span className="text-slate-200 text-sm font-medium truncate">
+                  {nombre}
+                </span>
+                <span className="text-cyan-500/70 text-xs capitalize">
+                  {role}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Bottom nav — solo visible en móvil */}
