@@ -8,12 +8,14 @@ import {
 } from "@/components/admin/StatCard";
 import DashboardChart from "@/components/admin/DashboardChart";
 import StatusChart from "@/components/admin/StatusChart";
+import MonthlyDeliveriesChart from "@/components/admin/MonthlyDeliveriesChart";
 
 import { getDashboardStats } from "@/lib/data/dashboard/getDashboardStats";
 import { getDeliveryChartData } from "@/lib/data/dashboard/getDeliveryChartData";
 import { getStatusDistribution } from "@/lib/data/dashboard/getStatusDistribution";
 import { getWeeklyDeliveriesComparison } from "@/lib/data/dashboard/getWeeklyDeliveriesComparison";
 import { getWeeklyReturnsComparison } from "@/lib/data/dashboard/getWeeklyReturnsComparison";
+import { getLast3MonthsDeliveries } from "@/lib/data/dashboard/getLast3MonthsDeliveries";
 
 export default async function DashboardPage() {
   const [
@@ -22,12 +24,14 @@ export default async function DashboardPage() {
     statusDistribution,
     deliverysComparison,
     returnsComparison,
+    monthlyDeliveries,
   ] = await Promise.all([
     getDashboardStats(),
     getDeliveryChartData(),
     getStatusDistribution(),
     getWeeklyDeliveriesComparison(),
     getWeeklyReturnsComparison(),
+    getLast3MonthsDeliveries(),
   ]);
 
   return (
@@ -62,6 +66,9 @@ export default async function DashboardPage() {
         <div className="min-w-0">
           <StatusChart data={statusDistribution} />
         </div>
+      </div>
+      <div className="mt-6">
+        <MonthlyDeliveriesChart data={monthlyDeliveries} />
       </div>
     </div>
   );
