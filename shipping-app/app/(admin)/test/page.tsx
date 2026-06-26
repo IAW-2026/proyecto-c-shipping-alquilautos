@@ -7,6 +7,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAuth } from "@clerk/nextjs";
 import {
   marcarComoEntregado,
   marcarComoDevuelto,
@@ -150,6 +151,7 @@ function ResponseBox({ result }: { result: ApiResponse | null | "loading" }) {
 // ─── Tab: Crear entrega ───────────────────────────────────────────────────────
 
 function TabCrear() {
+  const { getToken } = useAuth();
   const [fields, setFields] = useState({
     id_reserva: "reserva-001",
     id_vehiculo: "vehiculo-123",
@@ -172,10 +174,14 @@ function TabCrear() {
   async function handleSubmit() {
     setResult("loading");
     const t = Date.now();
+    const token = await getToken();
     try {
       const r = await fetch("/api/entrega", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           ...fields,
           fecha_inicio: fields.fecha_inicio + "T00:00:00.000Z",
@@ -302,6 +308,7 @@ function TabCrear() {
 // ─── Tab: Confirmar horarios ──────────────────────────────────────────────────
 
 function TabHorario() {
+  const { getToken } = useAuth();
   const [idReserva, setIdReserva] = useState("reserva-001");
   const [horaEntrega, setHoraEntrega] = useState("10:00");
   const [horaDevolucion, setHoraDevolucion] = useState("19:00");
@@ -323,11 +330,18 @@ function TabHorario() {
   useEffect(() => {
     if (!idReserva.trim()) return;
     setLoadingHorarios(true);
-    fetch(`/api/horario/${encodeURIComponent(idReserva)}`)
-      .then((r) => r.json())
-      .then((data) => setHorarios(data.horarios ?? []))
-      .catch(() => setHorarios([]))
-      .finally(() => setLoadingHorarios(false));
+
+    getToken().then((token) => {
+      fetch(`/api/horario/${encodeURIComponent(idReserva)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((r) => r.json())
+        .then((data) => setHorarios(data.horarios ?? []))
+        .catch(() => setHorarios([]))
+        .finally(() => setLoadingHorarios(false));
+    });
   }, [idReserva]);
 
   //Helper para encontrar el rango de un tipo
@@ -372,9 +386,13 @@ function TabHorario() {
     setResult("loading");
     const t = Date.now();
     try {
+      const token = await getToken();
       const r = await fetch("/api/entrega/horario", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(body),
       });
       const data = await r.json();
@@ -460,6 +478,7 @@ function TabHorario() {
 // ─── Tab: Cancelar ────────────────────────────────────────────────────────────
 
 function TabCancelar() {
+  const { getToken } = useAuth();
   const [idReserva, setIdReserva] = useState("reserva-001");
   const [result, setResult] = useState<ApiResponse | null | "loading">(null);
 
@@ -476,9 +495,13 @@ function TabCancelar() {
     setResult("loading");
     const t = Date.now();
     try {
+      const token = await getToken();
       const r = await fetch(`/api/entregas/${encodeURIComponent(idReserva)}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await r.json();
       setResult({ status: r.status, data, ms: Date.now() - t });
